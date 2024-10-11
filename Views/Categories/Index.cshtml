@@ -1,0 +1,72 @@
+﻿@using FinalProject.Models
+
+@{
+    ViewBag.PageTitle = "category managment";
+    ViewBag.CardTitle = "Add category";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Category Management</h2>
+
+        <!-- Add New Category Form -->
+        <div class="card mb-4">
+            <div class="card-header">Add New Category</div>
+            <div class="card-body">
+                <form asp-action="Add" method="post">
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">category name</label>
+                        <input type="text" class="form-control" name="CategoryName" id="CategoryName" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add category</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Categories List -->
+        <div class="card">
+            <div class="card-header">All Categories</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Category ID</th>
+                            <th>Category Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    @foreach (var categories in Model)
+                    {
+                        <tr>
+                            <td>@categories.CategoryId</td>
+                            <td>@categories.CategoryName</td>
+                            <td>
+                                <form asp-action="Delete" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@categories.CategoryId" />
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this category?');">
+                                        <i class="fas fa-trash"></i>
+                                        Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+﻿ 
+
+@{
+    ViewBag.PageTitle = "welocme to our restaurant";
+    
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Restaurant</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-image: url('restaurant-banner.jpg'); /* Replace with your image */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        header p {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #ff5722; /* Vibrant orange */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .about {
+            padding: 40px;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+
+        .about h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-image {
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .services {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 40px;
+            background-color: #fff;
+        }
+
+        .service {
+            background-color: #ffe0b2; /* Light orange background */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .service h3 {
+            margin: 10px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Our Restaurant</h1>
+        <p>Experience the finest dining with us!</p>
+        <a href="#about" class="btn">Learn More</a>
+    </header>
+
+    <section id="about" class="about">
+        <h2>About Us</h2>
+        <p>Our restaurant offers a unique culinary experience with a variety of delicious dishes crafted by our expert chefs. We are committed to using only the freshest ingredients to ensure every bite is a delight.</p>
+        <img src="restaurant-interior.jpg" alt="Restaurant Interior" class="about-image"> <!-- Replace with your image -->
+    </section>
+
+    <section class="services">
+        <div class="service">
+            <h3>Fine Dining</h3>
+            <p>Enjoy a luxurious dining experience in a sophisticated atmosphere.</p>
+        </div>
+        <div class="service">
+            <h3>Takeout & Delivery</h3>
+            <p>Convenient options to enjoy your favorite meals at home.</p>
+        </div>
+        <div class="service">
+            <h3>Event Catering</h3>
+            <p>Let us make your special occasion unforgettable with our catering services.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Our Restaurant. All rights reserved.</p>
+    </footer>
+</body>
+</html>

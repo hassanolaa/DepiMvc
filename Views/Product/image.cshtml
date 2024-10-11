@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload Product Image</title>
+</head>
+<body>
+
+    <div class="container">
+        <h3>Upload Product Image</h3>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="productId">Product ID</label>
+                <input type="number" id="productId" name="productId" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="file">Product Image</label>
+                <input type="file" id="file" name="file" class="form-control" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-success">Upload</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle form submission
+            $('#uploadForm').on('submit', function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(this); // Capture form data
+
+                $.ajax({
+                    url: 'http://localhost:5024/api/Image/product-image', // Image upload URL
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // Required for file uploads
+                    processData: false, // Required for file uploads
+                    success: function (response) {
+                        alert('Image uploaded successfully!');
+                    },
+                    error: function (error) {
+                        alert('Error uploading image: ' + error.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

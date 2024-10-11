@@ -1,0 +1,47 @@
+﻿@using FinalProject.Models.Dto.Bill
+
+@model List<BillDto>
+@{
+    ViewBag.PageTitle = "Orders Management";
+    ViewBag.CardTitle = "Orders List";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="text-center">
+    <br />
+    <table class="table table-hover" width="100%">
+        <thead class="text-bold">
+            <tr>
+                <td>BillId</td>
+                <td>TotalPrice</td>
+                <td>Date</td>
+                <td>ProductBills</td>
+      
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BillId</td>
+                <td>@Html.Raw(item.TotalPrice)</td>
+                <td>@item.Date</td>
+                <td>
+                    <div class="vertical-list">
+                        @foreach (var product in item.ProductBills)
+                        {
+                            <div>x @product.Quantity @product.ProductName</div>
+                        }
+                    </div>
+                </td>
+              
+            </tr>
+        }
+    </table>
+
+    <style>
+        .vertical-list {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+

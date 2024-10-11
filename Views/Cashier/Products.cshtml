@@ -1,0 +1,217 @@
+﻿@using FinalProject.Models.Dto.Product
+@using FinalProject.Models.Dto.ProductBill
+@model List<ProductDto>
+
+@{
+    ViewBag.PageTitle = "Products Management";
+    ViewBag.CardTitle = "All Products";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+
+    var categories = ViewBag.Categories as List<string> ?? new List<string>();
+    var productBill = ViewBag.ProductBill as List<FinalProject.Models.Dto.Dto.ProductBill.ProductBillInsertDto> ?? new List<FinalProject.Models.Dto.Dto.ProductBill.ProductBillInsertDto>();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Products</title>
+
+    <style>
+        .category-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: wheat;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+            .category-nav a {
+                text-decoration: none;
+                color: #333;
+                padding: 10px 15px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+
+                .category-nav a:hover {
+                    background-color: chocolate;
+                    color: #fff;
+                }
+
+            .category-nav .active {
+                background-color: #ffcc99;
+                color: #fff;
+                pointer-events: none;
+            }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: beige;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .invoice-sidebar {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            right: 20px;
+            width: 300px;
+        }
+
+        .invoice-footer {
+            margin-top: 20px;
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-control {
+            padding: 5px 8px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="category-nav">
+                    @foreach (var category in categories)
+                    {
+                        <a asp-action="Products" asp-route-category="@category" class="@(ViewBag.SelectedCategory == category ? "active" : "")">
+                            @category
+                        </a>
+                    }
+                </div>
+
+                <div class="product-grid">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var product in Model)
+                        {
+                            <div class="product-card">
+                                <img src="@product.Image" alt="@product.ProductName" class="product-image" />
+                                <p class="product-name">@product.ProductName</p>
+                                <p>@product.Price.ToString("C")</p>
+                                <p>@product.Description</p>
+                                <div class="text-right">
+                                    <form asp-action="Select" method="post">
+                                        <input type="hidden" name="id" value="@product.ProductId" />
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-check"></i> Select
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No products available for this category.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="invoice-sidebar">
+                    <h4>Your Bill</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in productBill)
+                            {
+                                var product = Model.FirstOrDefault(p => p.ProductId == item.ProductId);
+                                if (product != null)
+                                {
+                                    <tr>
+                                        <td>@product.ProductName</td>
+                                        <td>
+                                            <div class="quantity-control">
+                                                <form asp-action="UpdateQuantity" method="post" style="display:inline;">
+                                                    <input type="hidden" name="productId" value="@product.ProductId" />
+                                                    <button type="submit" name="action" value="decrease" class="btn btn-sm btn-danger btn-control">-</button>
+                                                </form>
+                                                @item.Quantity
+                                                <form asp-action="UpdateQuantity" method="post" style="display:inline;">
+                                                    <input type="hidden" name="productId" value="@product.ProductId" />
+                                                    <button type="submit" name="action" value="increase" class="btn btn-sm btn-success btn-control">+</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td>@((item.Quantity * product.Price).ToString("C"))</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="invoice-footer">
+                        <p><strong>Total: @productBill.Sum(item => item.Quantity * Model.FirstOrDefault(p => p.ProductId == item.ProductId)?.Price ?? 0).ToString("C")</strong></p>
+                        <div class="button-container">
+                            <form asp-action="DeleteBill" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete All</button>
+                            </form>
+                            <form asp-action="SubmitBill" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-success btn-sm">Done</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../dist/js/adminlte.min.js"></script>
+</body>
+</html>
+
+
+
